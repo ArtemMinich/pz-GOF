@@ -1,36 +1,17 @@
-interface Transport {
-  deliver(): string;
-}
+import { RoadLogistics } from "./RoadLogistics";
+import { SeaLogistics } from "./SeaLogistics";
 
-class Truck implements Transport {
-  deliver(): string {
-    return "Доставка по дорозі у вантажівці";
-  }
-}
+export { Transport } from "./Transport";
+export { Truck } from "./Truck";
+export { Ship } from "./Ship";
+export { Logistics } from "./Logistics";
+export { RoadLogistics } from "./RoadLogistics";
+export { SeaLogistics } from "./SeaLogistics";
 
-class Ship implements Transport {
-  deliver(): string {
-    return "Доставка по морю у контейнері";
-  }
-}
+console.log("=== Factory Method ===\n");
 
-abstract class Logistics {
-  abstract createTransport(): Transport;
+const road = new RoadLogistics();
+const sea = new SeaLogistics();
 
-  planDelivery(): void {
-    const transport = this.createTransport();
-    console.log(`  ${transport.deliver()}`);
-  }
-}
-
-export class RoadLogistics extends Logistics {
-  createTransport(): Transport {
-    return new Truck();
-  }
-}
-
-export class SeaLogistics extends Logistics {
-  createTransport(): Transport {
-    return new Ship();
-  }
-}
+road.planDelivery();
+sea.planDelivery();

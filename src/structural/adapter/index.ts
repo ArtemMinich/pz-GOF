@@ -1,29 +1,16 @@
-export interface MediaPlayer {
-  play(file: string): string;
-}
+import { AudioAdapter } from "./AudioAdapter";
+import { VideoAdapter } from "./VideoAdapter";
 
-class OldAudioLib {
-  playMp3(path: string): string {
-    return `[OldAudioLib] MP3: ${path}`;
-  }
-}
+export { MediaPlayer } from "./MediaPlayer";
+export { OldAudioLib } from "./OldAudioLib";
+export { OldVideoLib } from "./OldVideoLib";
+export { AudioAdapter } from "./AudioAdapter";
+export { VideoAdapter } from "./VideoAdapter";
 
-class OldVideoLib {
-  renderVideo(path: string): string {
-    return `[OldVideoLib] Video: ${path}`;
-  }
-}
+console.log("\n=== Adapter ===\n");
 
-export class AudioAdapter implements MediaPlayer {
-  private lib = new OldAudioLib();
-  play(file: string): string {
-    return this.lib.playMp3(file);
-  }
-}
+const audio = new AudioAdapter();
+const video = new VideoAdapter();
 
-export class VideoAdapter implements MediaPlayer {
-  private lib = new OldVideoLib();
-  play(file: string): string {
-    return this.lib.renderVideo(file);
-  }
-}
+console.log(`  ${audio.play("song.mp3")}`);
+console.log(`  ${video.play("movie.mkv")}`);

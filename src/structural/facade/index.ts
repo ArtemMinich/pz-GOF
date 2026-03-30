@@ -1,29 +1,16 @@
-class CPU {
-  freeze(): string { return "CPU: freeze"; }
-  execute(): string { return "CPU: execute"; }
-}
+import { ComputerFacade } from "./ComputerFacade";
 
-class Memory {
-  load(data: string): string { return `Memory: load "${data}"`; }
-}
+export { CPU } from "./CPU";
+export { Memory } from "./Memory";
+export { HardDrive } from "./HardDrive";
+export { ComputerFacade } from "./ComputerFacade";
 
-class HardDrive {
-  read(sector: number): string { return `HDD: read sector ${sector}`; }
-}
+console.log("\n=== Facade ===\n");
 
-export class ComputerFacade {
-  private cpu = new CPU();
-  private memory = new Memory();
-  private hdd = new HardDrive();
+const pc = new ComputerFacade();
 
-  start(): void {
-    console.log("  " + this.cpu.freeze());
-    console.log("  " + this.hdd.read(0));
-    console.log("  " + this.memory.load("BOOT"));
-    console.log("  " + this.cpu.execute());
-  }
+console.log("Запуск:");
+pc.start();
 
-  shutdown(): void {
-    console.log("  " + this.cpu.freeze());
-  }
-}
+console.log("Вимкнення:");
+pc.shutdown();

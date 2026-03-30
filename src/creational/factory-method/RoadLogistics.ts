@@ -1,0 +1,9 @@
+import { Transport } from "./Transport";
+import { Logistics } from "./Logistics";
+import { Truck } from "./Truck";
+
+export class RoadLogistics extends Logistics {
+  createTransport(): Transport {
+    return new Truck();
+  }
+}
