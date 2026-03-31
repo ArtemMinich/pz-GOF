@@ -1,46 +1,27 @@
-interface Observer {
-  update(event: string, data: unknown): void;
-}
+import { Channel } from "./Channel";
+import { EmailSubscriber } from "./EmailSubscriber";
+import { TelegramSubscriber } from "./TelegramSubscriber";
 
-class EventEmitter {
-  private listeners = new Map<string, Observer[]>();
+export { Observer } from "./Observer";
+export { Channel } from "./Channel";
+export { EmailSubscriber } from "./EmailSubscriber";
+export { TelegramSubscriber } from "./TelegramSubscriber";
 
-  subscribe(event: string, obs: Observer): void {
-    if (!this.listeners.has(event)) this.listeners.set(event, []);
-    this.listeners.get(event)!.push(obs);
-  }
+console.log("=== Observer ===\n");
 
-  unsubscribe(event: string, obs: Observer): void {
-    const list = this.listeners.get(event);
-    if (list) this.listeners.set(event, list.filter(o => o !== obs));
-  }
+const channel = new Channel("GoF Patterns");
 
-  protected notify(event: string, data: unknown): void {
-    for (const obs of this.listeners.get(event) ?? []) {
-      obs.update(event, data);
-    }
-  }
-}
+const email = new EmailSubscriber("user@gmail.com");
+const telegram = new TelegramSubscriber("temic");
 
-export class Store extends EventEmitter {
-  addProduct(name: string, price: number): void {
-    this.notify("added", { name, price });
-  }
+channel.subscribe(email);
+channel.subscribe(telegram);
 
-  applyDiscount(name: string, percent: number): void {
-    this.notify("discount", { name, percent });
-  }
-}
+console.log("Публікуємо відео:");
+channel.publish("Observer за 5 хвилин");
 
-export class EmailNotifier implements Observer {
-  update(event: string, data: unknown): void {
-    const d = data as Record<string, unknown>;
-    console.log(`  [Email] ${event}: ${d.name} — ${d.price ?? d.percent + "%"}`);
-  }
-}
+console.log("\nВідписуємо email:");
+channel.unsubscribe(email);
 
-export class Logger implements Observer {
-  update(event: string, data: unknown): void {
-    console.log(`  [Log] ${event}: ${JSON.stringify(data)}`);
-  }
-}
+console.log("Публікуємо ще відео:");
+channel.publish("Strategy за 5 хвилин");
